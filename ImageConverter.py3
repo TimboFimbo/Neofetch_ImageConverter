@@ -17,8 +17,6 @@ class MyHTMLParser(HTMLParser):
         self.colors.color_list.append(parsed_color)
         self.colors.cur_color = parsed_color
         print("${c" + str((len(self.colors.color_list))) + "}", end='')
-        # Just for Testing
-        #print("'" + str(self.colors.color_list) + "'", end='')
 
     # TODO Try to extract colors from image (convert 24-bit/RGB to 8-bit/256-color)
     def check_color(self, parsed_color):
@@ -29,11 +27,11 @@ class MyHTMLParser(HTMLParser):
             return       
         elif parsed_color not in self.colors.color_list:
             self.add_color(parsed_color)
+            # print("'" + str(self.colors.color_list) + "'", end='') # Just for Testing
             return
         else:
             print("${c" + str(self.colors.color_list.index(parsed_color) + 1) + "}", end='')
             self.colors.cur_color = parsed_color
-
 
     def handle_starttag(self, tag, attrs):
         startTagText = self.get_starttag_text()
@@ -46,8 +44,9 @@ class MyHTMLParser(HTMLParser):
     def handle_data(self, data):
         print(data, end='')
 
-# TODO Needs to prompt for input and output files
-f = open("[ADD COMPLETE FILE PATH HERE]", "r")
+# TODO Needs to prompt for output files
+input_file = input("Enter path to HTML input_file: ")
+f = open(input_file, "r")
 lines = f.readlines()
 
 parser = MyHTMLParser()
