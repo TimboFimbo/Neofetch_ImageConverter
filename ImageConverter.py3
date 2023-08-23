@@ -11,6 +11,39 @@ class MyHTMLParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
         self.colors = Colors
+        self.color_chart = {
+            "000000" : 16,
+            "808080" : 8,
+            "800000" : 88,
+            "ff0000" : 9,
+            "008000" : 28,
+            "00ff00" : 10,
+            "808000" : 208,
+            "ffff00" : 11,
+            "000080" : 21,
+            "0000ff" : 12,
+            "800080" : 127,
+            "ff00ff" : 13,
+            "008080" : 33,
+            "00ffff" : 14,
+            "c0c0c0" : 246,
+            "ffffff" : 15
+        }
+
+    def print_final_colors(self):
+        # print("'" + str(self.colors.color_list) + "'", end='') # Just for Testing
+        print("\nascii_colors=(", end='')
+        first = True
+
+        for color in self.colors.color_list:
+            if first:
+                first = False
+                print(str(self.color_chart[color]), end='')
+            else:
+                print(" " + str(self.color_chart[color]), end='')
+
+        print(")")
+
 
     # TODO Check if user wishes to merge colors down to 6 (neofetch default maximum)
     def add_color(self, parsed_color):
@@ -18,7 +51,6 @@ class MyHTMLParser(HTMLParser):
         self.colors.cur_color = parsed_color
         print("${c" + str((len(self.colors.color_list))) + "}", end='')
 
-    # TODO Try to extract colors from image (convert 24-bit/RGB to 8-bit/256-color)
     def check_color(self, parsed_color):
         if parsed_color == self.colors.cur_color:
             return
@@ -27,7 +59,6 @@ class MyHTMLParser(HTMLParser):
             return       
         elif parsed_color not in self.colors.color_list:
             self.add_color(parsed_color)
-            # print("'" + str(self.colors.color_list) + "'", end='') # Just for Testing
             return
         else:
             print("${c" + str(self.colors.color_list.index(parsed_color) + 1) + "}", end='')
@@ -53,3 +84,5 @@ parser = MyHTMLParser()
 
 for line in lines:
     parser.feed(line)
+
+parser.print_final_colors()
